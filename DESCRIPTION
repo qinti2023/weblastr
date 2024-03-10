@@ -10,6 +10,8 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.0
 Imports: 
+Depends: 
+    tidyverse,
     data.table,
     httr,
     progress,
@@ -17,5 +19,3 @@ Imports:
     rentrez,
     stringr,
     XML
-Depends: 
-    tidyverse

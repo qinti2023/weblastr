@@ -1,13 +1,3 @@
-library(httr)
-library(stringr)
-library(progress)
-library(tidyverse)
-library(data.table)
-library(XML)
-library(RCurl)
-library(rentrez)
-
-
 #' Countdown seconds
 #'
 #' @param seconds int
