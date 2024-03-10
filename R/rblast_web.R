@@ -73,6 +73,9 @@ if(!is.na(hit_string)){
 hit_df = data.frame(raw_string = unlist(strsplit(hit_string,"\n")), stringsAsFactors = FALSE)
 hit_df =hit_df[3:(nrow(hit_df)-2),,drop=F]
 
+
+
+
 cat("###### get ncbi summary ######\n")
 get_summary = function(string){
     spilt_string = unlist(strsplit(string,"\\s"))
@@ -132,19 +135,37 @@ get_des <- function(url, url_all, len){
 
     }
   }
+get_des_df <- function(df) {
+  df %>%
+    mutate(Description= map(df$NCBI_url, ~possibly(get_des, NA)(.x, df$NCBI_url, n())))
+}
+
+
+get_title <- function(id, id_all, len){
+  pos <- match(id, id_all)
+  cat(sprintf("%d/%d running get_des at: %s \n", pos, len, id))
+  ncbi_gb <- tryCatch({
+    entrez_summary(db = "nucleotide", id = id)$title
+  }, error=function(e) {
+    cat("Error in ID:", id, "\n", e$message, "\n")
+    return(NA)
+  })}
+
 
 #' Mutate a column about description base on Genebank ID
 #'
-#' @param df "data frome"
+#' @param df "data frame"
 #'
-#' @return "data frome"
+#' @return "data frame"
 #' @export
 #'
-#' @examples get_cds_df(data_frame)
-get_des_df <- function(df) {
-    df %>%
-      mutate(Description= map(df$NCBI_url, ~possibly(get_des, NA)(.x, df$NCBI_url, n())))
-  }
+#' @examples get_title_df(data_frame)
+get_title_df <- function(df) {
+  df %>%
+    mutate(Description = map(df$Ref_ID, ~possibly(get_title, NA)(.x, df$Ref_ID, n())))
+}
+
+
 
 get_cds <- function(id, id_all, len){
     pos <- match(id, id_all)
@@ -168,7 +189,10 @@ get_cds <- function(id, id_all, len){
       unlist() %>%
       str_replace_all("[^A-Z]", "")
     return(cds)
-  }
+}
+
+
+
 #' Mutate a column about aa sequence of CDS base on Genebank ID
 #'
 #' @param df "data frame"
@@ -199,7 +223,7 @@ rblast_web = function(seq,program,database,org){
   if(!is.null(hit_final)){
     cat("###### get description and cds_aa ######\n")
     hit_final = hit_final |>
-    get_des_df() |>
+    get_title_df() |>
     get_cds_df()
     cat("done")
   }

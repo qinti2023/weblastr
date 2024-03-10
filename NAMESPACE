@@ -3,5 +3,5 @@
 export(countdown)
 export(get_blast_result)
 export(get_cds_df)
-export(get_des_df)
+export(get_title_df)
 export(rblast_web)
