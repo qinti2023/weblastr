@@ -1,0 +1,11 @@
+Package: weblastr
+Type: Package
+Title: Run blast.ncbi.nlm.nih.gov in R
+Version: 0.1.1
+Author: qinti
+Maintainer: The package maintainer <qinti.top>
+Description: the package can get result from Blast web,Mainly obtaining results through online acquisition to solve the problem of local machines being unable to install nt/nr databases.
+License: MIT license 
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.0
